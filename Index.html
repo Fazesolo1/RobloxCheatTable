@@ -6,201 +6,122 @@
   <title>Roblox Lua Table</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #222;
       margin: 0;
-      font-family: sans-serif;
-      background: #f2f2f2;
-      color: #000;
-    }
-    .page-wrapper {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
       padding: 20px;
     }
-    .ad-space {
-      width: 160px;
-      min-height: 600px;
-      background: #ddd;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: bold;
-      padding: 10px;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 16px;
+    h1, h2 {
+      color: #0055aa;
     }
-    .ad-space p {
-      margin: 6px 0;
-    }
-    .container {
-      max-width: 960px;
-      padding: 40px 20px;
-      background: transparent;
-    }
-    .header {
-      background: #333;
-      color: #fff;
-      padding: 20px;
-      font-size: 28px;
-      text-align: center;
-      border-radius: 8px;
-    }
-    .section {
-      background: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      margin-top: 20px;
-      border: 1px solid #ddd;
-    }
-    .code-block {
+    pre {
       background: #eee;
-      padding: 15px;
-      font-family: monospace;
-      border-left: 4px solid #333;
-      margin: 20px 0;
+      padding: 10px;
+      border-left: 4px solid #0055aa;
+      overflow-x: auto;
     }
-    .copy-button {
-      background: #333;
+    button {
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      font-weight: bold;
+      background: #0055aa;
       color: #fff;
-      padding: 10px 16px;
       border: none;
-      border-radius: 6px;
-      font-weight: bold;
+      border-radius: 4px;
       cursor: pointer;
     }
-    h2 {
-      margin-top: 40px;
-      font-size: 20px;
+    button:hover {
+      background: #003f88;
     }
-    .url-list a {
-      display: block;
-      margin: 8px 0;
-      color: #0066cc;
-      text-decoration: underline;
-      font-weight: bold;
-    }
-    .url-list a:hover {
-      color: #0000aa;
-      background: #e6f0ff;
-    }
-    details {
-      background: #fdfdfd;
-      padding: 15px;
-      border-radius: 6px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-    }
-    summary {
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .button-row {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .form-button {
-      background: #333;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 6px;
+    a {
+      color: #0055aa;
       text-decoration: none;
-      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
     }
     footer {
-      margin-top: 60px;
-      padding-top: 30px;
-      border-top: 1px solid #ddd;
+      margin-top: 40px;
       font-size: 14px;
-      color: #444;
-    }
-    @media (max-width: 768px) {
-      .ad-space {
-        display: none;
-      }
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div class="page-wrapper">
-    <div class="ad-space">
-      <p>Advertise here</p>
-      <p style="color:#d00; font-weight:bold;">Only $5</p>
-      <p style="font-size:13px; color:#555;">Contact us to claim this spot</p>
+  <h1>Roblox Lua Table</h1>
+  <p>This Lua table includes features such as:</p>
+  <ul>
+    <li>Infinite Health</li>
+    <li>Unlimited Ammo</li>
+    <li>Unlimited Speed</li>
+    <li>Teleport</li>
+    <li>And more cool stuff like aimlock</li>
+  </ul>
+  <p>Instructions:</p>
+  <ol>
+    <li>Open your injector and attach it to the game process.</li>
+    <li>Load the script and activate desired features.</li>
+  </ol>
+
+  <h2>Main Script</h2>
+  <pre id="main-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Fazesolo1/RobloxLuaMenu/refs/heads/main/LuaScript"))()</pre>
+  <button onclick="downloadText('main-script', 'MainScript.txt')">Download</button>
+
+  <h2>Arsenal Script</h2>
+  <pre id="arsenal-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Fazesolo1/ArsenalMenu/refs/heads/main/ArsenalMenu.lua"))()</pre>
+  <button onclick="downloadText('arsenal-script', 'ArsenalMenu.txt')">Download</button>
+
+  <h2>More Scripts</h2>
+  <pre id="fly-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Fly-GUI"))()</pre>
+  <button onclick="downloadText('fly-script', 'Fly-GUI.txt')">Download</button>
+
+  <pre id="jump-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Infinite-Jump-GUI"))()</pre>
+  <button onclick="downloadText('jump-script', 'Infinite-Jump-GUI.txt')">Download</button>
+
+  <pre id="teleport-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Click-to-Teleport-GUI"))()</pre>
+  <button onclick="downloadText('teleport-script', 'Click-to-Teleport-GUI.txt')">Download</button>
+
+  <pre id="fling-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Fling-GUI"))()</pre>
+  <button onclick="downloadText('fling-script', 'Fling-GUI.txt')">Download</button>
+
+  <pre id="noclip-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Noclip-GUI"))()</pre>
+  <button onclick="downloadText('noclip-script', 'Noclip-GUI.txt')">Download</button>
+
+  <h2>Verified Script Injectors</h2>
+  <ul>
+    <li><a href="https://wearedevs.net/d/JJSploit" target="_blank">Download JJSPloit</a></li>
+    <li><a href="https://wearedevs.net/d/Solara" target="_blank">Download Solara</a></li>
+    <li><a href="https://wearedevs.net/d/Delta" target="_blank">Download Delta (Mobile)</a></li>
+  </ul>
+
+  <h2>FAQ</h2>
+  <details><summary>How do I use this script?</summary><p>Attach your injector to Roblox, paste the script, and run it. Features will activate instantly.</p></details>
+  <details><summary>Is this safe?</summary><p>We do not host injectors. Use trusted tools and always scan files before running. This site is for educational purposes only.</p></details>
+  <details><summary>Can I use this on mobile?</summary><p>Yes, with mobile-compatible injectors like Delta. Make sure your device supports injection tools.</p></details>
+  <details><summary>Where can I get support?</summary><p>Use the contact form below or visit our YouTube channel for walkthroughs and updates.</p></details>
+
+  <h2>Disclaimer</h2>
+  <p>This site shares Lua scripts for injector use. Educational and private testing only. We do not promote cheating or breaking Roblox rules.</p>
+
+  <footer>
+    <div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSewX6MhK_yyhAMQYgiSwMhMbYLPt_BZsn4vs5HBcXksKXn4oA/viewform" target="_blank">Contact</a> |
+      <a href="https://www.youtube.com/@LuaDevs" target="_blank">YouTube</a>
     </div>
-
-    <div class="container">
-      <div class="header">Roblox Lua Table</div>
-      <div class="section">
-        <p>This Lua table includes features such as:</p>
-        <ul>
-          <li>Infinite Health</li>
-          <li>Unlimited Ammo</li>
-          <li>Unlimited Speed</li>
-          <li>Teleport</li>
-          <li>And more cool stuff like aim assist</li>
-        </ul>
-        <p>Instructions:</p>
-        <ol>
-          <li>Copy the Lua script below.</li>
-          <li>Open your executor and attach it to the game process.</li>
-          <li>Load the script and activate desired features.</li>
-        </ol>
-        <div class="code-block">
-          loadstring(game:HttpGet("https://raw.githubusercontent.com/Fazesolo1/RobloxLuaMenu/refs/heads/main/LuaScript"))()
-        </div>
-        <button class="copy-button" onclick="copyScript()">Copy Script</button>
-
-        <h2>More Scripts</h2>
-        <div class="code-block">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Fly-GUI"))()</div>
-        <div class="code-block">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Infinite-Jump-GUI"))()</div>
-        <div class="code-block">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Click-to-Teleport-GUI"))()</div>
-        <div class="code-block">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Fling-GUI"))()</div>
-        <div class="code-block">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Noclip-GUI"))()</div>
-
-        <h2>Verified Script Execution Tools</h2>
-        <div class="url-list">
-          <a href="https://wearedevs.net/d/JJSploit" target="_blank">Download JJSPloit</a>
-          <a href="https://wearedevs.net/d/Solara" target="_blank">Download Solara</a>
-          <a href="https://wearedevs.net/d/Delta" target="_blank">Download Delta (Mobile)</a>
-        </div>
-
-        <h2>FAQ</h2>
-        <details><summary>How do I use this script?</summary><p>Attach your executor to Roblox, paste the script, and run it. Features will activate instantly.</p></details>
-        <details><summary>Is this safe?</summary><p>We do not host executors. Use trusted tools and always scan files before running. This site is for educational purposes only.</p></details>
-        <details><summary>Can I use this on mobile?</summary><p>Yes, with mobile-compatible executors like Delta. Make sure your device supports execution tools.</p></details>
-        <details><summary>Where can I get support?</summary><p>Use the contact form below or visit our YouTube channel for walkthroughs and updates.</p></details>
-
-        <h2>Disclaimer</h2>
-        <p>This site shares Lua scripts for executor use. Educational and private testing only. We do not promote cheating or breaking Roblox rules.</p>
-      </div>
-
-      <footer>
-        <div class="button-row">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSewX6MhK_yyhAMQYgiSwMhMbYLPt_BZsn4vs5HBcXksKXn4oA/viewform" target="_blank" class="form-button">Contact</a>
-          <a href="https://www.youtube.com/@LuaDevs" target="_blank" class="form-button">YouTube</a>
-        </div>
-        <p id="timestamp" style="margin-top:20px;"></p>
-      </footer>
-    </div>
-
-    <div class="ad-space">
-      <p>Advertise here</p>
-      <p style="color:#d00; font-weight:bold;">Only $5</p>
-      <p style="font-size:13px; color:#555;">Contact us to claim this spot</p>
-    </div>
-  </div>
+    <p id="timestamp"></p>
+  </footer>
 
   <script>
-    function copyScript() {
-      const script = `loadstring(game:HttpGet("https://raw.githubusercontent.com/Fazesolo1/RobloxLuaMenu/main/LuaScript.lua"))()`;
-      navigator.clipboard.writeText(script);
-      alert("Copied");
+    function downloadText(id, filename) {
+      const text = document.getElementById(id).textContent;
+      const blob = new Blob([text], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
     }
+
     const now = new Date();
     document.getElementById("timestamp").textContent = "Loaded: " + now.toLocaleString();
   </script>
