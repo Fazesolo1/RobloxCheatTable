@@ -1,129 +1,474 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roblox Lua Table</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      color: #222;
-      margin: 0;
-      padding: 20px;
-    }
-    h1, h2 {
-      color: #0055aa;
-    }
-    pre {
-      background: #eee;
-      padding: 10px;
-      border-left: 4px solid #0055aa;
-      overflow-x: auto;
-    }
-    button {
-      margin-bottom: 20px;
-      padding: 8px 16px;
-      font-weight: bold;
-      background: #0055aa;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #003f88;
-    }
-    a {
-      color: #0055aa;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 14px;
-      color: #666;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ember">
+<meta name="theme-color" content="#f7f5f2">
+<title>Ember</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+–bg:    #f7f5f2;
+–bg2:   #efecea;
+–ink:   #1c1917;
+–ink2:  #78716c;
+–ink3:  #a8a29e;
+–line:  rgba(28,25,23,0.08);
+–ember: #e85d26;
+–sat:   env(safe-area-inset-top,    44px);
+–sab:   env(safe-area-inset-bottom, 34px);
+–sal:   env(safe-area-inset-left,   0px);
+–sar:   env(safe-area-inset-right,  0px);
+}
+
+html { height: 100%; background: var(–bg); }
+
+body {
+height: 100%;
+background: var(–bg);
+font-family: ‘Geist’, sans-serif;
+color: var(–ink);
+position: fixed;
+width: 100%;
+overflow: hidden;
+}
+
+#sparkCanvas {
+position: fixed; inset: 0;
+width: 100%; height: 100%;
+pointer-events: none;
+z-index: 50;
+}
+
+/* ── APP SHELL ── */
+.app {
+display: flex;
+flex-direction: column;
+height: 100%;
+padding-top:    var(–sat);
+padding-bottom: var(–sab);
+padding-left:   var(–sal);
+padding-right:  var(–sar);
+}
+
+/* ── TOP BAR ── */
+.top-bar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 24px 0;
+flex-shrink: 0;
+}
+.wordmark {
+display: flex; align-items: center; gap: 7px;
+}
+.wordmark-name {
+font-family: ‘Instrument Serif’, serif;
+font-size: 20px; color: var(–ink); letter-spacing: -0.3px;
+}
+.wordmark-dot {
+width: 6px; height: 6px;
+background: var(–ember); border-radius: 50%;
+box-shadow: 0 0 8px rgba(232,93,38,0.55);
+margin-bottom: 1px;
+}
+.top-count {
+font-size: 12px; color: var(–ink3); font-weight: 400; letter-spacing: 0.2px;
+}
+
+.rule {
+height: 1px; background: var(–line);
+margin: 16px 24px 0; flex-shrink: 0;
+}
+
+/* ── NOTES LIST ── */
+.notes-area {
+flex: 1; overflow-y: auto; overflow-x: hidden;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
+padding: 6px 24px 16px;
+}
+.notes-area::-webkit-scrollbar { display: none; }
+
+.empty-state {
+display: flex; flex-direction: column;
+align-items: center; justify-content: center;
+height: 100%; gap: 10px;
+}
+.empty-icon { font-size: 28px; opacity: 0.2; filter: grayscale(1); }
+.empty-text {
+font-family: ‘Instrument Serif’, serif;
+font-size: 16px; font-style: italic;
+color: var(–ink3); text-align: center; line-height: 1.55;
+}
+
+.note-item {
+display: flex; align-items: flex-start; gap: 13px;
+padding: 15px 0; border-bottom: 1px solid var(–line);
+animation: note-in .4s cubic-bezier(.22,1,.36,1) both;
+opacity: 0;
+}
+@keyframes note-in {
+from { opacity: 0; transform: translateY(8px); }
+to   { opacity: 1; transform: none; }
+}
+.note-bullet {
+width: 5px; height: 5px; border-radius: 50%;
+background: var(–ember); flex-shrink: 0; margin-top: 8px;
+box-shadow: 0 0 6px rgba(232,93,38,.35);
+}
+.note-body { flex: 1; min-width: 0; }
+.note-text {
+font-family: ‘Instrument Serif’, serif;
+font-size: 17px; color: var(–ink); line-height: 1.5; letter-spacing: -.1px;
+}
+.note-time { font-size: 11px; color: var(–ink3); margin-top: 4px; }
+
+/* ── CAPTURE ── */
+.capture-section { flex-shrink: 0; padding: 0 16px 10px; }
+.capture-card {
+background: var(–bg2); border-radius: 22px;
+padding: 16px 18px 14px;
+border: 1px solid var(–line);
+box-shadow: inset 0 1px 3px rgba(28,25,23,.04);
+transition: border-color .25s, box-shadow .25s;
+}
+.capture-card.focused {
+border-color: rgba(232,93,38,.22);
+box-shadow: inset 0 1px 3px rgba(28,25,23,.04), 0 0 0 4px rgba(232,93,38,.06);
+}
+.capture-input {
+width: 100%; min-height: 52px; max-height: 120px;
+background: transparent; border: none; outline: none;
+font-family: ‘Instrument Serif’, serif;
+font-size: 18px; color: var(–ink); line-height: 1.5; resize: none;
+caret-color: var(–ember);
+}
+.capture-input::placeholder { color: var(–ink3); font-style: italic; }
+.capture-row {
+display: flex; align-items: center;
+justify-content: space-between;
+margin-top: 10px; padding-top: 10px;
+border-top: 1px solid var(–line); gap: 8px;
+}
+.btn-row { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+.mic-btn {
+width: 38px; height: 38px; border-radius: 50%;
+border: 1.5px solid var(–line); background: var(–bg);
+display: flex; align-items: center; justify-content: center;
+font-size: 16px; cursor: pointer; transition: all .18s;
+-webkit-user-select: none; user-select: none; flex-shrink: 0;
+}
+.mic-btn:active { transform: scale(.88); }
+.mic-btn.recording {
+background: rgba(232,93,38,.08); border-color: rgba(232,93,38,.35);
+animation: mic-pulse 1.1s ease-in-out infinite;
+}
+@keyframes mic-pulse {
+0%,100% { box-shadow: 0 0 0 0 rgba(232,93,38,.25); }
+50%      { box-shadow: 0 0 0 7px rgba(232,93,38,0); }
+}
+
+.save-btn {
+height: 38px; padding: 0 20px; border-radius: 20px; border: none;
+background: var(–ember); color: #fff;
+font-family: ‘Geist’, sans-serif; font-size: 14px; font-weight: 500;
+cursor: pointer; transition: all .18s;
+box-shadow: 0 2px 14px rgba(232,93,38,.28);
+-webkit-user-select: none; user-select: none; flex-shrink: 0;
+}
+.save-btn:active { transform: scale(.93); opacity: .88; }
+
+/* ── VOICE SHEET ── */
+.scrim {
+position: fixed; inset: 0;
+background: rgba(28,25,23,.28);
+backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+z-index: 60; opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.scrim.show { opacity: 1; pointer-events: all; }
+
+.voice-sheet {
+position: fixed; bottom: 0; left: 0; right: 0;
+background: var(–bg); border-radius: 28px 28px 0 0;
+padding: 20px 28px calc(var(–sab) + 16px);
+border-top: 1px solid var(–line);
+box-shadow: 0 -20px 60px rgba(28,25,23,.1);
+z-index: 70;
+transform: translateY(100%);
+transition: transform .38s cubic-bezier(.25,.46,.45,.94);
+will-change: transform;
+}
+.voice-sheet.open { transform: translateY(0); }
+
+.sheet-handle {
+width: 36px; height: 4px;
+background: rgba(28,25,23,.12); border-radius: 2px;
+margin: 0 auto 26px;
+}
+.voice-orb {
+width: 76px; height: 76px; border-radius: 50%;
+background: radial-gradient(circle, rgba(232,93,38,.14) 0%, transparent 70%);
+border: 1.5px solid rgba(232,93,38,.18);
+display: flex; align-items: center; justify-content: center;
+font-size: 28px; margin: 0 auto 16px; position: relative;
+}
+.voice-orb::before, .voice-orb::after {
+content: ‘’; position: absolute; border-radius: 50%;
+border: 1px solid rgba(232,93,38,.1);
+animation: orb-ring 2.2s ease-out infinite;
+}
+.voice-orb::before { width: 115%; height: 115%; }
+.voice-orb::after  { width: 140%; height: 140%; animation-delay: .5s; }
+@keyframes orb-ring {
+0%   { transform: scale(1); opacity: .7; }
+100% { transform: scale(1.15); opacity: 0; }
+}
+.voice-status {
+font-family: ‘Instrument Serif’, serif;
+font-size: 19px; text-align: center; color: var(–ink); margin-bottom: 8px;
+}
+.voice-transcript {
+font-size: 14px; font-style: italic;
+font-family: ‘Instrument Serif’, serif;
+color: var(–ink3); text-align: center;
+min-height: 44px; margin-bottom: 24px;
+line-height: 1.55; word-break: break-word;
+transition: color .2s;
+}
+.voice-transcript.has-text { color: var(–ink); font-style: normal; }
+
+.voice-save-btn {
+width: 100%; height: 52px; border-radius: 16px; border: none;
+background: var(–ink); color: var(–bg);
+font-family: ‘Geist’, sans-serif; font-size: 16px; font-weight: 500;
+cursor: pointer; transition: all .18s;
+-webkit-user-select: none; user-select: none;
+}
+.voice-save-btn:active { opacity: .82; transform: scale(.97); }
+</style>
+
 </head>
 <body>
-  <h1>Roblox Lua Table</h1>
-  <p>This Lua table includes features such as:</p>
-  <ul>
-    <li>Infinite Health</li>
-    <li>Unlimited Ammo</li>
-    <li>Unlimited Speed</li>
-    <li>Teleport</li>
-    <li>And more cool stuff like aimlock</li>
-  </ul>
-  <p>Instructions:</p>
-  <ol>
-    <li>Open your injector and attach it to the game process.</li>
-    <li>Load the script and activate desired features.</li>
-  </ol>
 
-  <h2>Main Script</h2>
-  <pre id="main-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Fazesolo1/RobloxLuaMenu/refs/heads/main/LuaScript"))()</pre>
-  <button onclick="downloadText('main-script', 'MainScript.txt')">Download</button>
+<canvas id="sparkCanvas"></canvas>
 
-  <h2>Arsenal Script</h2>
-  <pre id="arsenal-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Fazesolo1/ArsenalMenu/refs/heads/main/ArsenalMenu.lua"))()</pre>
-  <button onclick="downloadText('arsenal-script', 'ArsenalMenu.txt')">Download</button>
+<div class="scrim" id="scrim" onclick="closeVoice()"></div>
 
-  <h2>More Scripts</h2>
-  <pre id="fly-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Fly-GUI"))()</pre>
-  <button onclick="downloadText('fly-script', 'Fly-GUI.txt')">Download</button>
+<div class="voice-sheet" id="voiceSheet">
+  <div class="sheet-handle"></div>
+  <div class="voice-orb">🎙️</div>
+  <div class="voice-status"  id="voiceStatus">Listening…</div>
+  <div class="voice-transcript" id="voiceLine">Say your idea aloud</div>
+  <button class="voice-save-btn" id="voiceSaveBtn" onclick="stopVoice()">Save idea</button>
+</div>
 
-  <pre id="jump-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Infinite-Jump-GUI"))()</pre>
-  <button onclick="downloadText('jump-script', 'Infinite-Jump-GUI.txt')">Download</button>
-
-  <pre id="teleport-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Click-to-Teleport-GUI"))()</pre>
-  <button onclick="downloadText('teleport-script', 'Click-to-Teleport-GUI.txt')">Download</button>
-
-  <pre id="fling-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Fling-GUI"))()</pre>
-  <button onclick="downloadText('fling-script', 'Fling-GUI.txt')">Download</button>
-
-  <pre id="noclip-script">loadstring(game:HttpGet("https://raw.githubusercontent.com/Not-Hack3r/Easy-Roblox-GUIs/main/Noclip-GUI"))()</pre>
-  <button onclick="downloadText('noclip-script', 'Noclip-GUI.txt')">Download</button>
-
-  <h2>Verified Script Injectors</h2>
-  <ul>
-    <li><a href="https://wearedevs.net/d/JJSploit" target="_blank">Download JJSPloit</a></li>
-    <li><a href="https://wearedevs.net/d/Solara" target="_blank">Download Solara</a></li>
-    <li><a href="https://wearedevs.net/d/Delta" target="_blank">Download Delta (Mobile)</a></li>
-  </ul>
-
-  <h2>FAQ</h2>
-  <details><summary>How do I use this script?</summary><p>Attach your injector to Roblox, paste the script, and run it. Features will activate instantly.</p></details>
-  <details><summary>Is this safe?</summary><p>We do not host injectors. Use trusted tools and always scan files before running. This site is for educational purposes only.</p></details>
-  <details><summary>Can I use this on mobile?</summary><p>Yes, with mobile-compatible injectors like Delta. Make sure your device supports injection tools.</p></details>
-  <details><summary>Where can I get support?</summary><p>Use the contact form below or visit our YouTube channel for walkthroughs and updates.</p></details>
-
-  <h2>Disclaimer</h2>
-  <p>This site shares Lua scripts for injector use. Educational and private testing only. We do not promote cheating or breaking Roblox rules.</p>
-
-  <footer>
-    <div>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSewX6MhK_yyhAMQYgiSwMhMbYLPt_BZsn4vs5HBcXksKXn4oA/viewform" target="_blank">Contact</a> |
-      <a href="https://www.youtube.com/@LuaDevs" target="_blank">YouTube</a>
+<div class="app">
+  <div class="top-bar">
+    <div class="wordmark">
+      <span class="wordmark-name">ember</span>
+      <div class="wordmark-dot"></div>
     </div>
-    <p id="timestamp"></p>
-  </footer>
+    <span class="top-count" id="noteCount"></span>
+  </div>
+  <div class="rule"></div>
+  <div class="notes-area" id="notesList">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">◎</div>
+      <div class="empty-text">Your first idea<br>is waiting to be sparked.</div>
+    </div>
+  </div>
+  <div class="capture-section">
+    <div class="capture-card" id="captureCard">
+      <textarea
+        class="capture-input" id="captureInput"
+        placeholder="What are you thinking…"
+        rows="2"
+        autocorrect="on" autocapitalize="sentences" spellcheck="true"
+        onfocus="document.getElementById('captureCard').classList.add('focused')"
+        onblur="document.getElementById('captureCard').classList.remove('focused')"
+      ></textarea>
+      <div class="capture-row">
+        <div class="btn-row">
+          <div class="mic-btn" id="micBtn" onclick="openVoice()">🎙️</div>
+        </div>
+        <button class="save-btn" onclick="saveNote()">Capture</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <script>
-    function downloadText(id, filename) {
-      const text = document.getElementById(id).textContent;
-      const blob = new Blob([text], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      link.click();
-    }
+<script>
+// ── SPARKS ──────────────────────────────────
+const cv  = document.getElementById('sparkCanvas');
+const ctx = cv.getContext('2d');
+let pts=[], raf=null;
 
-    const now = new Date();
-    document.getElementById("timestamp").textContent = "Loaded: " + now.toLocaleString();
-  </script>
+function sz() { cv.width=innerWidth; cv.height=innerHeight; }
+sz(); window.addEventListener('resize', sz);
+
+const CLR=['rgba(232,93,38,','rgba(245,158,11,','rgba(252,211,77,','rgba(255,180,60,','rgba(255,120,40,'];
+
+function edge(w,h){ const e=Math.floor(Math.random()*4);
+  return [{x:Math.random()*w,y:0,e:0},{x:w,y:Math.random()*h,e:1},{x:Math.random()*w,y:h,e:2},{x:0,y:Math.random()*h,e:3}][e]; }
+
+function mk(w,h){ const o=edge(w,h),bases=[Math.PI*.5,Math.PI,Math.PI*1.5,0];
+  const ang=bases[o.e]+(Math.random()-.5)*Math.PI*.6, sp=1.6+Math.random()*3.2, lf=.65+Math.random()*.45;
+  return {x:o.x,y:o.y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,
+    size:1+Math.random()*2.8,color:CLR[Math.floor(Math.random()*CLR.length)],
+    life:lf,maxLife:lf,grav:.035+Math.random()*.03,fade:.011+Math.random()*.011,trail:[]}; }
+
+function burst(n=70){ const w=cv.width,h=cv.height,now=performance.now();
+  for(let i=0;i<n;i++){const p=mk(w,h);p._b=now+i*7;pts.push(p);}
+  if(!raf) draw(); }
+
+function draw(now=performance.now()){ ctx.clearRect(0,0,cv.width,cv.height);
+  let alive=false;
+  for(const p of pts){
+    if(now<p._b){alive=true;continue;}
+    p.trail.push({x:p.x,y:p.y});if(p.trail.length>9)p.trail.shift();
+    p.vy+=p.grav;p.x+=p.vx;p.y+=p.vy;p.vx*=.989;p.vy*=.989;p.life-=p.fade;
+    const a=Math.max(0,p.life/p.maxLife);if(p.life>0)alive=true;
+    for(let i=1;i<p.trail.length;i++){
+      const ta=(i/p.trail.length)*a*.5;
+      ctx.beginPath();ctx.moveTo(p.trail[i-1].x,p.trail[i-1].y);ctx.lineTo(p.trail[i].x,p.trail[i].y);
+      ctx.strokeStyle=p.color+ta+')';ctx.lineWidth=p.size*(i/p.trail.length)*.65;ctx.lineCap='round';ctx.stroke();}
+    const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size*3.2);
+    g.addColorStop(0,p.color+(a*.85)+')');g.addColorStop(1,p.color+'0)');
+    ctx.beginPath();ctx.arc(p.x,p.y,p.size*3.2,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+    ctx.beginPath();ctx.arc(p.x,p.y,p.size*.5,0,Math.PI*2);ctx.fillStyle=p.color+Math.min(1,a*1.3)+')';ctx.fill();}
+  pts=pts.filter(p=>p.life>0||now<p._b);
+  raf=alive?requestAnimationFrame(draw):null;
+  if(!alive)ctx.clearRect(0,0,cv.width,cv.height); }
+
+// ── NOTES ──────────────────────────────────
+let notes=[];
+function ts(){ return new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}); }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderTop(){
+  const list=document.getElementById('notesList'),empty=document.getElementById('emptyState'),cnt=document.getElementById('noteCount');
+  empty.style.display=notes.length?'none':'flex';
+  cnt.textContent=notes.length?(notes.length+(notes.length===1?' idea':' ideas')):'';
+  if(!notes.length)return;
+  const n=notes[0],el=document.createElement('div');
+  el.className='note-item';
+  el.innerHTML=`<div class="note-bullet"></div><div class="note-body"><div class="note-text">${esc(n.text)}</div><div class="note-time">${n.time}</div></div>`;
+  list.insertBefore(el,list.firstChild); }
+
+function saveNote(){
+  const inp=document.getElementById('captureInput'),text=inp.value.trim();
+  if(!text){inp.focus();return;}
+  notes.unshift({text,time:ts()});renderTop();inp.value='';burst(72); }
+
+document.getElementById('captureInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();saveNote();} });
+
+// ── VOICE ──────────────────────────────────
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recog=null,finalTx='',mr=null,chunks=[],fallback=false;
+const $line=document.getElementById('voiceLine');
+const $stat=document.getElementById('voiceStatus');
+const $btn=document.getElementById('voiceSaveBtn');
+const $mic=document.getElementById('micBtn');
+const $sheet=document.getElementById('voiceSheet');
+const $scrim=document.getElementById('scrim');
+
+function setLine(t,hasText){$line.textContent=t;$line.classList.toggle('has-text',!!hasText);}
+function setBtn(t){$btn.textContent=t;}
+function setStat(t){$stat.textContent=t;}
+function sheetOpen(){$sheet.classList.add('open');$scrim.classList.add('show');$mic.classList.add('recording');}
+function sheetClose(){$sheet.classList.remove('open');$scrim.classList.remove('show');$mic.classList.remove('recording');}
+
+function openVoice(){
+  finalTx='';fallback=false;
+  setStat('Listening…');setLine('Say your idea aloud',false);setBtn('Save idea');
+  sheetOpen();
+  SR?startWS():startMR(); }
+
+function startWS(){
+  recog=new SR();recog.continuous=true;recog.interimResults=true;recog.lang='en-US';
+  recog.onstart=()=>setStat('Listening…');
+  recog.onresult=e=>{
+    let int='';finalTx='';
+    for(let i=0;i<e.results.length;i++) e.results[i].isFinal?finalTx+=e.results[i][0].transcript+' ':int+=e.results[i][0].transcript;
+    const d=(finalTx+int).trim();
+    if(d){setLine(d,true);setStat('Keep going or save');}};
+  recog.onerror=e=>{
+    if(e.error==='aborted')return;
+    if(e.error==='not-allowed'){setLine('Microphone access denied.',false);$mic.classList.remove('recording');return;}
+    recog=null;setLine('Switching to record mode…',false);setTimeout(startMR,300);};
+  recog.onend=()=>{
+    $mic.classList.remove('recording');
+    if(finalTx.trim()){setLine(finalTx.trim(),true);setStat('Done — tap Save');}
+    else if(!$line.textContent.includes('access'))setStat('Tap Save or keep speaking');};
+  try{recog.start();}catch(e){recog=null;startMR();} }
+
+async function startMR(){
+  fallback=true;chunks=[];
+  let stream;
+  try{stream=await navigator.mediaDevices.getUserMedia({audio:true});}
+  catch(e){setLine('Microphone access denied.',false);$mic.classList.remove('recording');return;}
+  const types=['audio/mp4','audio/webm;codecs=opus','audio/webm','audio/ogg',''];
+  const mime=types.find(m=>!m||MediaRecorder.isTypeSupported(m))||'';
+  try{mr=new MediaRecorder(stream,mime?{mimeType:mime}:{});}catch{mr=new MediaRecorder(stream);}
+  mr.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data);};
+  mr.onstop=async()=>{
+    stream.getTracks().forEach(t=>t.stop());
+    if(!chunks.length){setLine('No audio captured.',false);return;}
+    setStat('Transcribing…');setLine('',false);setBtn('…');
+    await transcribe();};
+  mr.start(100);
+  setStat('Recording');setLine('🔴 Tap "Stop & Save" when done',false);setBtn('Stop & Save');
+  $mic.classList.add('recording'); }
+
+async function transcribe(){
+  try{
+    const am=mr?.mimeType||'audio/mp4';
+    const blob=new Blob(chunks,{type:am});
+    const ab=await blob.arrayBuffer();
+    const u8=new Uint8Array(ab);
+    let bin='';for(let i=0;i<u8.length;i++)bin+=String.fromCharCode(u8[i]);
+    const b64=btoa(bin);
+    let cm='audio/mp4';
+    if(am.includes('webm'))cm='audio/webm';
+    if(am.includes('ogg'))cm='audio/ogg';
+    if(am.includes('wav'))cm='audio/wav';
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:256,
+        messages:[{role:'user',content:[
+          {type:'document',source:{type:'base64',media_type:cm,data:b64}},
+          {type:'text',text:'Transcribe the spoken words exactly. Return only the transcribed text, nothing else.'}]}]})});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const d=await res.json();
+    const t=d.content?.map(c=>c.text||'').join('').trim();
+    if(t){finalTx=t;setLine(t,true);setStat('Done — tap Save');setBtn('Save idea');}
+    else{setLine('Nothing heard — try again.',false);setBtn('Close');}
+  }catch(e){setLine('Transcription failed — tap Close',false);setBtn('Close');}}
+
+function closeVoice(){
+  if(recog){recog.abort();recog=null;}
+  if(mr&&mr.state!=='inactive'){mr.stream?.getTracks().forEach(t=>t.stop());mr=null;}
+  chunks=[];finalTx='';fallback=false;
+  sheetClose();setBtn('Save idea'); }
+
+function stopVoice(){
+  if(mr&&mr.state==='recording'){mr.stop();return;}
+  if(recog){recog.stop();recog=null;}
+  const text=(finalTx||$line.textContent).trim();
+  const bad=['Say your idea aloud','Listening…','Keep going','Done — tap Save','🔴','Transcribing','No audio','Nothing heard','Microphone','Transcription failed','Switching','…','Close'];
+  const skip=!text||bad.some(b=>text.startsWith(b));
+  closeVoice();
+  if(!skip){notes.unshift({text,time:ts()});renderTop();burst(72);} }
+</script>
+
 </body>
 </html>
